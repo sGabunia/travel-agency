@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { chooseSettings } from "../../features/regionalSettings/regionalSettingsSlice";
 import { Button } from "@mui/material";
-import styles from "./CurrencyModal.css";
-import { style } from "@mui/system";
+import styles from "./CurrencyModal.module.css";
+import { CountriesList } from "./CountriesList";
+import { CurrenciesList } from "./CurrenciesList";
 
-export const CurrencyModal = () => {
+export const CurrencyModal = ({ closeModal }) => {
+  const dispatch = useDispatch();
+  const { region, currency } = useSelector(({ settings }) => settings);
+  const countries = useSelector(({ countries }) => countries.countries);
+  const currencies = useSelector(({ currencies }) => currencies.currencies);
+
+  const [countryValue, setcountryValue] = useState(region);
+  const [currencyValue, setCurrencyValue] = useState(currency);
+
+  const popularCurrencies = currencies.filter(
+    (currency) =>
+      currency.Code === "USD" ||
+      currency.Code === "EUR" ||
+      currency.Code === "GBP"
+  );
+
+  console.log(countryValue);
+
+  const handleSettings = (e) => {
+    e.preventDefault();
+    dispatch(chooseSettings({ currency: currencyValue, region: countryValue }));
+    closeModal();
+  };
+
   return (
     <section className={styles.modal}>
       <header className={styles.modalHeader}>
@@ -11,22 +37,43 @@ export const CurrencyModal = () => {
         <button>close</button>
       </header>
       <div className={styles.modalContent}>
-        <form>
+        <form onSubmit={handleSettings}>
           <fieldset>
-            <label htmlFor="">Language</label>
-            <select name="" id=""></select>
+            <label htmlFor="countries">Country/Region</label>
+            <select
+              name="countries"
+              id="countries"
+              value={countryValue}
+              onChange={(e) => setcountryValue(e.target.value)}
+            >
+              {countries.map((country) => (
+                <CountriesList key={country.Code} {...country} />
+              ))}
+            </select>
           </fieldset>
           <fieldset>
-            <label htmlFor="">Country/Region</label>
-            <select name="" id=""></select>
+            <label htmlFor="currencies">Currency</label>
+            <select
+              name="currencies"
+              id="currencies"
+              value={currencyValue}
+              onChange={(e) => setCurrencyValue(e.target.value)}
+            >
+              <optgroup label="Popular currencies">
+                {popularCurrencies.map((currency) => (
+                  <CurrenciesList key={currency.Code} {...currency} />
+                ))}
+              </optgroup>
+              <optgroup label="Other currencies">
+                {currencies.map((currency) => (
+                  <CurrenciesList key={currency.Code} {...currency} />
+                ))}
+              </optgroup>
+            </select>
           </fieldset>
           <fieldset>
-            <label htmlFor="">Currency</label>
-            <select name="" id=""></select>
-          </fieldset>
-          <fieldset>
-            <Button>Save</Button>
-            <Button>Calcel</Button>
+            <Button type="submit">Save</Button>
+            <Button onClick={closeModal}>Calcel</Button>
           </fieldset>
         </form>
       </div>

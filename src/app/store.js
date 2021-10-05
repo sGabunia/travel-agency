@@ -1,8 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import counterReducer from "../features/counter/counterSlice";
+import currenciesReducer from "../features/currencies/currenciesSlice";
+import countriesReducer from "../features/countries/countriesSlice";
+import regionalSettingsReducer from "../features/regionalSettings/regionalSettingsSlice";
+import citiesReducer from "../features/cities/citiesSlice";
 
 export const store = configureStore({
   reducer: {
-    // counter: counterReducer,
+    currencies: currenciesReducer,
+    countries: countriesReducer,
+    settings: regionalSettingsReducer,
+    cities: citiesReducer,
   },
 });
