@@ -34,9 +34,6 @@ export const Nav = () => {
             <CurrencyModal closeModal={handleClose} />
           </Dialog>
         </li>
-        <li>
-          <Button>Log in</Button>
-        </li>
       </ul>
     </nav>
   );
