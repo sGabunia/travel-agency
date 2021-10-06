@@ -25,7 +25,7 @@ const citiesSlice = createSlice({
       })
       .addCase(fetchCities.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.cities = state.cities.concat(action.payload);
+        state.cities = action.payload;
       })
       .addCase(fetchCities.rejected, (state, action) => {
         state.status = "failed";

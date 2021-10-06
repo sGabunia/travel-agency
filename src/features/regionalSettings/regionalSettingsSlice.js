@@ -16,8 +16,6 @@ const regionalSettingsSlice = createSlice({
   },
 });
 
-console.log(regionalSettingsSlice);
-
 export const { chooseSettings } = regionalSettingsSlice.actions;
 
 export default regionalSettingsSlice.reducer;

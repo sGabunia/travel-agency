@@ -5,6 +5,9 @@ import { Button } from "@mui/material";
 import styles from "./CurrencyModal.module.css";
 import { CountriesList } from "./CountriesList";
 import { CurrenciesList } from "./CurrenciesList";
+import { RegionLogo } from "../../icons/RegionLogo";
+import { CurrenciesLogo } from "../../icons/CurrenciesLogo";
+import { CloseIcon } from "../../icons/CloseIcon";
 
 export const CurrencyModal = ({ closeModal }) => {
   const dispatch = useDispatch();
@@ -22,8 +25,6 @@ export const CurrencyModal = ({ closeModal }) => {
       currency.Code === "GBP"
   );
 
-  console.log(countryValue);
-
   const handleSettings = (e) => {
     e.preventDefault();
     dispatch(chooseSettings({ currency: currencyValue, region: countryValue }));
@@ -34,15 +35,23 @@ export const CurrencyModal = ({ closeModal }) => {
     <section className={styles.modal}>
       <header className={styles.modalHeader}>
         <h2>Regional Settings</h2>
-        <button>close</button>
+
+        <button onClick={closeModal}>
+          <CloseIcon />
+        </button>
       </header>
       <div className={styles.modalContent}>
         <form onSubmit={handleSettings}>
           <fieldset>
-            <label htmlFor="countries">Country/Region</label>
+            <label htmlFor="countries">
+              {" "}
+              <RegionLogo />
+              Country/Region
+            </label>
             <select
               name="countries"
               id="countries"
+              className={styles.counties}
               value={countryValue}
               onChange={(e) => setcountryValue(e.target.value)}
             >
@@ -52,10 +61,13 @@ export const CurrencyModal = ({ closeModal }) => {
             </select>
           </fieldset>
           <fieldset>
-            <label htmlFor="currencies">Currency</label>
+            <label htmlFor="currencies">
+              <CurrenciesLogo /> Currency
+            </label>
             <select
               name="currencies"
               id="currencies"
+              className={styles.currencies}
               value={currencyValue}
               onChange={(e) => setCurrencyValue(e.target.value)}
             >
@@ -71,9 +83,20 @@ export const CurrencyModal = ({ closeModal }) => {
               </optgroup>
             </select>
           </fieldset>
-          <fieldset>
-            <Button type="submit">Save</Button>
-            <Button onClick={closeModal}>Calcel</Button>
+          <fieldset className={styles.buttonGroup}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#00a698",
+                "&:hover": { backgroundColor: "#03ccbb" },
+              }}
+              type="submit"
+            >
+              Save
+            </Button>
+            <Button variant="outlined" onClick={closeModal}>
+              Cancel
+            </Button>
           </fieldset>
         </form>
       </div>

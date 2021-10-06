@@ -21,9 +21,6 @@ export const Nav = () => {
   return (
     <nav>
       <ul className={styles.navList}>
-        <li className={styles.navHelp}>
-          <a href="">Help</a>
-        </li>
         <li className={styles.navCulture}>
           <button className={styles.navCultureButton} onClick={handleOpen}>
             <div>
