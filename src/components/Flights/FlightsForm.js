@@ -93,6 +93,7 @@ export const FlightsForm = () => {
                 id="from"
                 value={city.from}
                 onChange={handleChange}
+                autoComplete="off"
               />
               <CitiesList
                 cities={citiesFrom}
@@ -109,6 +110,7 @@ export const FlightsForm = () => {
                 id="to"
                 value={city.to}
                 onChange={handleChange}
+                autoComplete="off"
               />
               <CitiesList
                 cities={citiesTo}
