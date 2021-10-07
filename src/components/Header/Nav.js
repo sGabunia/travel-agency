@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Dialog } from "@mui/material";
+import { Dialog } from "@mui/material";
 import { useSelector } from "react-redux";
 
 import styles from "./Nav.module.css";

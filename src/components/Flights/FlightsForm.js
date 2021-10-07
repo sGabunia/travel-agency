@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCities } from "../../features/cities/citiesSlice";
+import { fetchCitiesFrom } from "../../features/cities/citiesFromSlice";
+import { fetchCitiesTo } from "../../features/cities/citiesToSlice";
 import { Button } from "@mui/material";
 import { CitiesList } from "./CitiesList";
 
@@ -9,20 +10,52 @@ import styles from "./Flights.module.css";
 export const FlightsForm = () => {
   const dispatch = useDispatch();
   const [city, setCity] = useState({ from: "", to: "" });
+  const [selectedFromCity, setSelectedFromCity] = useState(null);
+  const [selectedToCity, setSelectedToCity] = useState(null);
   const [travelType, setTravelType] = useState("return");
 
+  const { citiesFrom } = useSelector(({ citiesFrom }) => citiesFrom);
+  const { citiesTo } = useSelector(({ citiesTo }) => citiesTo);
+
+  const [isCityFromShown, setisCityFromShown] = useState(false);
+  const [isCityToShown, setisCityToShown] = useState(false);
+
+  const handleFromIsShown = () => {
+    setisCityFromShown(false);
+  };
+
+  const handleToIsShown = () => {
+    setisCityToShown(false);
+  };
+
   const handleChange = (e) => {
-    if (e.target.value.length > 1) {
-      dispatch(fetchCities(e.target.value));
-    }
     setCity({ ...city, [e.target.name]: e.target.value });
+    if (e.target.name === "from" && e.target.value.length > 1) {
+      dispatch(fetchCitiesFrom(city.from));
+      setisCityFromShown(true);
+    }
+    if ((e.target.name === "to") & (e.target.value.length > 1)) {
+      dispatch(fetchCitiesTo(city.to));
+      setisCityToShown(true);
+    }
+  };
+
+  const handleSearchFrom = (id) => {
+    const selected = citiesFrom.find((city) => city.id === id);
+    setSelectedFromCity(selected);
+    setCity({ ...city, from: selected.PlaceName });
+  };
+
+  const handleSearchTo = (id) => {
+    const selected = citiesTo.find((city) => city.id === id);
+    setSelectedToCity(selected);
+    setCity({ ...city, to: selected.PlaceName });
   };
 
   const handleTypeChange = (e) => {
     setTravelType(e.target.value);
   };
 
-  const inpLength = city.from.length > 1;
   return (
     <div className={styles.flightsSearch}>
       <form className={styles.flightsForm}>
@@ -52,7 +85,7 @@ export const FlightsForm = () => {
         </div>
         <div className={styles.searchInputsWrapper}>
           <div className={styles.searchInputs}>
-            <div className={styles.location}>
+            <div className={`${styles.location} ${styles.locationFrom}`}>
               <label htmlFor="from">From</label>
               <input
                 type="text"
@@ -61,9 +94,14 @@ export const FlightsForm = () => {
                 value={city.from}
                 onChange={handleChange}
               />
-              <CitiesList inpLength={inpLength} />
+              <CitiesList
+                cities={citiesFrom}
+                handleCitySuggestion={handleSearchFrom}
+                isShown={isCityFromShown && city.from.length}
+                handleIsShown={handleFromIsShown}
+              />
             </div>
-            <div className={styles.location}>
+            <div className={`${styles.location} ${styles.locationTo}`}>
               <label htmlFor="to">To</label>
               <input
                 type="text"
@@ -72,7 +110,12 @@ export const FlightsForm = () => {
                 value={city.to}
                 onChange={handleChange}
               />
-              <CitiesList />
+              <CitiesList
+                cities={citiesTo}
+                handleCitySuggestion={handleSearchTo}
+                isShown={isCityToShown && city.to.length}
+                handleIsShown={handleToIsShown}
+              />
             </div>
           </div>
           <div className={styles.flightsDates}>

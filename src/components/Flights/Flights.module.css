@@ -67,6 +67,28 @@
   flex-grow: 1;
 }
 
+.locationFrom {
+  position: relative;
+}
+
+.locationTo {
+  position: relative;
+}
+
+.flightsAutosuggestion {
+  position: absolute;
+  top: 100%;
+  width: 50%;
+  z-index: 900;
+  display: block;
+  background-color: #fff;
+  color: #000;
+}
+
+.flightsAutosuggestion > ul {
+  list-style: none;
+}
+
 /* .searchButton {
   padding: 0.5rem 1.5rem;
   background-color: #00a698;

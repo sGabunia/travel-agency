@@ -10,9 +10,9 @@ export const Header = () => {
       <Wrapper>
         <div className={styles.headerLogoWrapper}>
           <div>
-            <a href="#">
+            <button href="#">
               <MainLogo />
-            </a>
+            </button>
           </div>
           <Nav />
         </div>
