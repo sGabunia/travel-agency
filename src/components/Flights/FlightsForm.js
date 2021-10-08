@@ -12,7 +12,12 @@ export const FlightsForm = () => {
   const [city, setCity] = useState({ from: "", to: "" });
   const [selectedFromCity, setSelectedFromCity] = useState(null);
   const [selectedToCity, setSelectedToCity] = useState(null);
+  const [departDate, setDepartDate] = useState("2021-10-08");
+  const [returnDate, setReturnDate] = useState("2021-10-15");
   const [travelType, setTravelType] = useState("return");
+
+  console.log(selectedFromCity);
+  console.log(selectedToCity);
 
   const { citiesFrom } = useSelector(({ citiesFrom }) => citiesFrom);
   const { citiesTo } = useSelector(({ citiesTo }) => citiesTo);
@@ -55,6 +60,16 @@ export const FlightsForm = () => {
   const handleTypeChange = (e) => {
     setTravelType(e.target.value);
   };
+
+  const handleDepartDateChange = (e) => {
+    setDepartDate(e.target.value);
+  };
+
+  const handleReturnDateChange = (e) => {
+    setReturnDate(e.target.value);
+  };
+
+  console.log(departDate);
 
   return (
     <div className={styles.flightsSearch}>
@@ -123,7 +138,13 @@ export const FlightsForm = () => {
           <div className={styles.flightsDates}>
             <div className={styles.flightsDate}>
               <label htmlFor="dapartDate">Depart</label>
-              <input type="date" name="departDate" id="dapartDate" />
+              <input
+                type="date"
+                name="departDate"
+                id="dapartDate"
+                onChange={handleDepartDateChange}
+                value={departDate}
+              />
             </div>
             <div className={styles.flightsDate}>
               <label htmlFor="returnDate">Return</label>
@@ -131,6 +152,8 @@ export const FlightsForm = () => {
                 type="date"
                 name="returnDate"
                 id="returnDate"
+                onChange={handleReturnDateChange}
+                value={returnDate}
                 disabled={travelType === "one way"}
               />
             </div>
